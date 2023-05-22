@@ -26,7 +26,7 @@ const whatsappJob = new CronJob('*/30 * * * *', async () => {
         const res = await fetch(process.env.WHATSAPP_API_URL, {
           method: "POST",
           body: JSON.stringify({
-            inscricao: protocolo.num_inscricao,
+            inscricao: protocolo.num_inscricao ?? "Não se aplica",
             processo: protocolo.num_processo,
             assunto: protocolo.assunto,
             analise: protocolo.anos_analise ?? "Não se aplica",
