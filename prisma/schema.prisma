@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int @id @default(autoincrement())
+  email      String @unique
+  name       String @db.Text
+  password   String @db.Text
+  role       Role @default(USER)
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  is_enabled    Boolean  @default(true)
+
+  protocolos   Protocolo[]
+  @@map("users")
+}
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+model Protocolo {
+  id               Int       @id @default(autoincrement())
+
+  nome             String    @db.Text
+  assunto          String    @db.Text
+  num_inscricao    String    @db.Text
+  num_processo     String    @db.Text
+
+  anos_analise     String?   @db.Text
+  cpf              String?   @db.Text
+  telefone         String?   @db.Text
+  enviar_whatsapp  Boolean   @default(false)
+  whatsapp_enviado Boolean  @default(false)
+
+  created_at       DateTime  @default(now())
+
+  user             User @relation(fields: [user_id], references: [id])
+  user_id          Int
+
+  @@map("protocolos")
+}
