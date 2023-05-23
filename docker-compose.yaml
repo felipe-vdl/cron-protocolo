@@ -3,3 +3,7 @@ version: '3.8'
 services:
   server:
     build: ./
+    environment:
+      - DATABASE_URL="mysql://username:password@database_address:3306/protocolo?schema=public"
+      - WHATSAPP_API_URL=https://example.com
+      - WHATSAPP_API_KEY=secret
