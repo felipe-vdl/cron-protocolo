@@ -34,11 +34,11 @@ model Protocolo {
 
   nome             String    @db.Text
   assunto          String    @db.Text
-  num_inscricao    String    @db.Text
+  num_inscricao    String?    @db.Text
   num_processo     String    @db.Text
 
   anos_analise     String?   @db.Text
-  cpf              String?   @db.Text
+  cpf              String   @db.Text
   telefone         String?   @db.Text
   enviar_whatsapp  Boolean   @default(false)
   whatsapp_enviado Boolean  @default(false)

@@ -23,32 +23,34 @@ const whatsappJob = new CronJob('*/30 * * * *', async () => {
   if (protocolosNaoEnviados.length > 0) {
     for (let protocolo of protocolosNaoEnviados) {
       try {
-        const res = await fetch(process.env.WHATSAPP_API_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            inscricao: protocolo.num_inscricao ?? "Não se aplica",
-            processo: protocolo.num_processo,
-            assunto: protocolo.assunto,
-            analise: protocolo.anos_analise ?? "Não se aplica",
-            nome: protocolo.nome,
-            cpf: protocolo.cpf,
-            whatsapp: protocolo.telefone,
-            data: protocolo.created_at.toLocaleDateString("pt-BR")
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          }
-        });
-
-        if (res.ok) {
-          const updatedProtocolo = await prisma.protocolo.update({
-            where: {
-              id: protocolo.id,
-            },
-            data: {
-              whatsapp_enviado: true,
+          if (protocolo.telefone) {
+            const res = await fetch(process.env.WHATSAPP_API_URL, {
+              method: "POST",
+              body: JSON.stringify({
+              inscricao: protocolo.num_inscricao ?? "Não se aplica",
+              processo: protocolo.num_processo,
+              assunto: protocolo.assunto,
+              analise: protocolo.anos_analise ?? "Não se aplica",
+              nome: protocolo.nome,
+              cpf: protocolo.cpf.replace(".", "").replace("-", ""),
+              whatsapp: protocolo.telefone?.replace("-", ""),
+              data: protocolo.created_at.toLocaleDateString("pt-BR")
+            }),
+            headers: {
+              "Content-Type": "application/json",
             }
           });
+
+          if (res.ok) {
+            const updatedProtocolo = await prisma.protocolo.update({
+              where: {
+                id: protocolo.id,
+              },
+              data: {
+                whatsapp_enviado: true,
+              }
+            });
+          }
         }
       } catch (error) {
         console.log(error);
