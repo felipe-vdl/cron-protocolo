@@ -1,4 +1,5 @@
 # With Docker
+- cp docker-compose.yaml.example docker-compose.yaml
 - Configure the Environment Variables on docker-compose.yaml
 - docker compose up
 
