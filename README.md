@@ -1,6 +1,5 @@
 # With Docker
-- cp .env.example .env
-- Configure the Environment Variables
+- Configure the Environment Variables on docker-compose.yaml
 - docker compose up
 
 # Without Docker
