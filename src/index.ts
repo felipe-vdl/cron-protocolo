@@ -32,8 +32,8 @@ const whatsappJob = new CronJob('*/30 * * * *', async () => {
               assunto: protocolo.assunto,
               analise: protocolo.anos_analise ?? "Não se aplica",
               nome: protocolo.nome,
-              cpf: protocolo.cpf.replace(".", "").replace("-", ""),
-              whatsapp: protocolo.telefone?.replace("-", ""),
+              cpf: protocolo.cpf.replaceAll(".", "").replaceAll("-", ""),
+              whatsapp: protocolo.telefone?.replaceAll("-", ""),
               data: protocolo.created_at.toLocaleDateString("pt-BR")
             }),
             headers: {
