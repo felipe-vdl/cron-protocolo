@@ -24,9 +24,7 @@ const whatsappJob = new CronJob('*/30 * * * *', async () => {
     for (let protocolo of protocolosNaoEnviados) {
       try {
           if (protocolo.telefone) {
-            const res = await fetch(process.env.WHATSAPP_API_URL, {
-              method: "POST",
-              body: JSON.stringify({
+            const protocoloInfo = {
               inscricao: protocolo.num_inscricao ?? "Não se aplica",
               processo: protocolo.num_processo,
               assunto: protocolo.assunto,
@@ -35,7 +33,12 @@ const whatsappJob = new CronJob('*/30 * * * *', async () => {
               cpf: protocolo.cpf.replaceAll(".", "").replaceAll("-", ""),
               whatsapp: protocolo.telefone?.replaceAll("-", ""),
               data: protocolo.created_at.toLocaleDateString("pt-BR")
-            }),
+            }
+            console.log(protocoloInfo);
+            
+            const res = await fetch(process.env.WHATSAPP_API_URL, {
+              method: "POST",
+              body: JSON.stringify(protocoloInfo),
             headers: {
               "Content-Type": "application/json",
             }
